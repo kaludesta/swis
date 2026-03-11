@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      width: 350px;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+    }
+    h2 {
+      margin: 0 0 16px 0;
+      font-size: 18px;
+      color: #333;
+    }
+    #status {
+      margin-bottom: 8px;
+    }
+    .stats {
+      margin-bottom: 16px;
+    }
+    .site-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px;
+      border-bottom: 1px solid #eee;
+    }
+    .site-name {
+      font-weight: 500;
+      color: #333;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .site-time {
+      color: #666;
+      margin-left: 8px;
+    }
+    .total {
+      font-weight: bold;
+      padding: 12px 8px;
+      background: #f5f5f5;
+      border-radius: 4px;
+      margin-bottom: 16px;
+    }
+    .empty {
+      text-align: center;
+      color: #999;
+      padding: 20px;
+    }
+    .sync-btn {
+      width: 100%;
+      padding: 10px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 12px;
+    }
+    .sync-btn:hover {
+      background: #1d4ed8;
+    }
+    .sync-btn:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+    .clear-btn {
+      width: 100%;
+      padding: 10px;
+      background: #dc2626;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+    .clear-btn:hover {
+      background: #b91c1c;
+    }
+    .success-msg {
+      background: #10b981;
+      color: white;
+      padding: 8px;
+      border-radius: 4px;
+      margin-top: 8px;
+      text-align: center;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>Today's Activity</h2>
+  <div id="status"></div>
+  <div class="total" id="total">Total: 0h 0m</div>
+  <div class="stats" id="stats"></div>
+  <button id="syncBtn" class="sync-btn">Sync All to Server</button>
+  <button id="clearBtn" class="clear-btn">Clear All Data</button>
+  <div id="successMsg" class="success-msg">✅ Data cleared successfully!</div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

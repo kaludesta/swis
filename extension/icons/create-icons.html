@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Extension Icons</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .instructions {
+      background: #e3f2fd;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 30px;
+      border-left: 4px solid #2196F3;
+    }
+    .icon-section {
+      margin-bottom: 30px;
+      padding: 20px;
+      background: #fafafa;
+      border-radius: 5px;
+    }
+    canvas {
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      margin: 10px 0;
+      cursor: pointer;
+    }
+    canvas:hover {
+      border-color: #2196F3;
+    }
+    .download-btn {
+      background: #2196F3;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    .download-btn:hover {
+      background: #1976D2;
+    }
+    .success {
+      color: #4CAF50;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 Extension Icon Generator</h1>
+    
+    <div class="instructions">
+      <strong>Instructions:</strong>
+      <ol>
+        <li>Click each "Download" button below</li>
+        <li>Save the files as: <code>icon16.png</code>, <code>icon48.png</code>, <code>icon128.png</code></li>
+        <li>Save them in the <code>extension/icons/</code> folder</li>
+        <li>Go back to Chrome and click "Retry" on the extension</li>
+      </ol>
+    </div>
+
+    <div class="icon-section">
+      <h3>Icon 16x16</h3>
+      <canvas id="icon16" width="16" height="16"></canvas>
+      <br>
+      <button class="download-btn" onclick="downloadIcon('icon16', 'icon16.png')">
+        Download icon16.png
+      </button>
+      <div id="status16"></div>
+    </div>
+
+    <div class="icon-section">
+      <h3>Icon 48x48</h3>
+      <canvas id="icon48" width="48" height="48"></canvas>
+      <br>
+      <button class="download-btn" onclick="downloadIcon('icon48', 'icon48.png')">
+        Download icon48.png
+      </button>
+      <div id="status48"></div>
+    </div>
+
+    <div class="icon-section">
+      <h3>Icon 128x128</h3>
+      <canvas id="icon128" width="128" height="128"></canvas>
+      <br>
+      <button class="download-btn" onclick="downloadIcon('icon128', 'icon128.png')">
+        Download icon128.png
+      </button>
+      <div id="status128"></div>
+    </div>
+  </div>
+
+  <script>
+    function drawIcon(canvasId, size) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+      
+      // Background gradient
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#4F46E5');
+      gradient.addColorStop(1, '#7C3AED');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, size, size);
+      
+      // Clock icon
+      ctx.strokeStyle = '#FFFFFF';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.lineWidth = Math.max(1, size / 16);
+      
+      const centerX = size / 2;
+      const centerY = size / 2;
+      const radius = size / 3;
+      
+      // Circle
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+      ctx.stroke();
+      
+      // Hour hand (pointing up)
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY);
+      ctx.lineTo(centerX, centerY - radius * 0.5);
+      ctx.lineWidth = Math.max(1, size / 20);
+      ctx.stroke();
+      
+      // Minute hand (pointing right)
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY);
+      ctx.lineTo(centerX + radius * 0.7, centerY);
+      ctx.lineWidth = Math.max(1, size / 24);
+      ctx.stroke();
+      
+      // Center dot
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, Math.max(1, size / 32), 0, 2 * Math.PI);
+      ctx.fill();
+    }
+    
+    function downloadIcon(canvasId, filename) {
+      const canvas = document.getElementById(canvasId);
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      
+      // Show success message
+      const statusId = 'status' + canvasId.replace('icon', '');
+      const statusDiv = document.getElementById(statusId);
+      statusDiv.innerHTML = '<span class="success">✓ Downloaded! Save it in the extension/icons/ folder</span>';
+      setTimeout(() => {
+        statusDiv.innerHTML = '';
+      }, 5000);
+    }
+    
+    // Draw all icons on page load
+    drawIcon('icon16', 16);
+    drawIcon('icon48', 48);
+    drawIcon('icon128', 128);
+  </script>
+</body>
+</html>
