@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { Calendar, Clock, BookOpen, CheckSquare } from 'lucide-react';
+import { API_URL } from '../../config';
 
 interface DashboardPageProps {
   onLogout: () => void;
@@ -21,8 +22,6 @@ interface StudySession {
   duration: number;
   created_at: string;
 }
-
-const API_URL = 'http://localhost:3000/api';
 
 export default function DashboardPage({ onLogout }: DashboardPageProps) {
   const [assignments, setAssignments] = useState<Assignment[]>([]);

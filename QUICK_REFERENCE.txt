@@ -1,0 +1,130 @@
+╔══════════════════════════════════════════════════════════════════════╗
+║                    SWIS DEPLOYMENT QUICK REFERENCE                   ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+📚 GUIDES AVAILABLE:
+├─ START_HERE.md                  ← Read this first!
+├─ BEGINNER_DEPLOYMENT_GUIDE.md   ← Complete step-by-step (2 hours)
+├─ DEPLOYMENT_CHECKLIST.md        ← Quick checklist (1 hour)
+└─ DEPLOYMENT.md                  ← Technical docs (30 min)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 YOUR HOSTING STACK (100% FREE):
+
+Frontend  → Vercel      https://vercel.com
+Backend   → Render      https://render.com  
+Database  → Supabase    (you already have this!)
+Extension → Chrome      (install locally)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚡ SUPER QUICK START:
+
+1. Push to GitHub:
+   git init
+   git add .
+   git commit -m "Initial commit"
+   (create repo on GitHub)
+   git remote add origin https://github.com/YOUR-USERNAME/swis-app.git
+   git push -u origin main
+
+2. Deploy Backend (Render):
+   - Sign up with GitHub
+   - New Web Service → Connect repo
+   - Build: cd server && npm install
+   - Start: cd server && node index.js
+   - Add env: DATABASE_URL (from Supabase)
+
+3. Deploy Frontend (Vercel):
+   - Sign up with GitHub
+   - Import project
+   - Root directory: frontend
+   - Add env: VITE_API_URL (your Render URL + /api)
+
+4. Update Extension:
+   - Edit extension/background.js
+   - Change API_URL and DASHBOARD_URL
+   - git push (auto-redeploys)
+
+5. Install Extension:
+   - chrome://extensions/
+   - Developer mode ON
+   - Load unpacked → select extension folder
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📝 IMPORTANT URLS TO SAVE:
+
+Your Backend URL:  _________________________________________
+
+Your Frontend URL: _________________________________________
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔧 CONFIGURATION FILES CREATED:
+
+✅ frontend/src/config.ts         - API configuration
+✅ frontend/.env                   - Local environment variables
+✅ frontend/.env.example           - Template for others
+✅ server/requirements.txt         - Python ML dependencies
+✅ render.yaml                     - Render configuration
+✅ vercel.json                     - Vercel configuration
+✅ .gitignore                      - Git ignore rules
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🧪 TEST YOUR DEPLOYMENT:
+
+Backend:  https://your-backend.onrender.com/api/health
+          Should return: {"status":"ok","database":"connected"}
+
+Frontend: https://your-app.vercel.app
+          Should show login page
+
+Extension: Browse websites → Check Analytics page
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔄 UPDATE YOUR APP:
+
+git add .
+git commit -m "your message"
+git push
+
+(Render and Vercel auto-deploy in 2-3 minutes)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🆘 TROUBLESHOOTING:
+
+Backend slow?        → Normal (30s cold start). Use UptimeRobot.
+Can't connect?       → Check CORS in server/index.js
+Extension not sync?  → Check API_URL in background.js
+Database error?      → Verify DATABASE_URL in Render
+
+Full troubleshooting: See BEGINNER_DEPLOYMENT_GUIDE.md
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 PRO TIPS:
+
+1. Set up UptimeRobot (free) to prevent backend sleep
+2. Save your URLs somewhere safe
+3. Check logs if something breaks (Render/Vercel dashboard)
+4. Test locally before deploying
+5. Enable auto-deploy (already configured!)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 FREE TIER LIMITS:
+
+Render:   750 hrs/month, sleeps after 15 min
+Vercel:   Unlimited, no sleep, global CDN
+Supabase: 500MB storage, 2GB bandwidth/month
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎉 READY? Open START_HERE.md and let's deploy!
+
+╚══════════════════════════════════════════════════════════════════════╝

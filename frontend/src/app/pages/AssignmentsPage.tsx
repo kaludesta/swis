@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { Plus, X, Trash2 } from 'lucide-react';
+import { API_URL } from '../../config';
 
 interface AssignmentsPageProps {
   onLogout: () => void;
@@ -18,8 +19,6 @@ interface Assignment {
   course_name?: string;
   created_at?: string;
 }
-
-const API_URL = 'http://localhost:3000/api';
 
 export default function AssignmentsPage({ onLogout }: AssignmentsPageProps) {
   const [assignments, setAssignments] = useState<Assignment[]>([]);

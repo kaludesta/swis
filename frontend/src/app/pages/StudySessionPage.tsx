@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { Plus, Clock } from 'lucide-react';
+import { API_URL } from '../../config';
 
 interface StudySessionPageProps {
   onLogout: () => void;
@@ -14,8 +15,6 @@ interface StudySession {
   notes: string;
   created_at?: string;
 }
-
-const API_URL = 'http://localhost:3000/api';
 
 export default function StudySessionPage({ onLogout }: StudySessionPageProps) {
   const [sessions, setSessions] = useState<StudySession[]>([]);

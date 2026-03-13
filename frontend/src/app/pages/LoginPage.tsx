@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { GraduationCap } from 'lucide-react';
+import { API_URL } from '../../config';
 
 interface LoginPageProps {
   onLogin: () => void;
 }
-
-const API_URL = 'http://localhost:3000/api';
 
 export default function LoginPage({ onLogin }: LoginPageProps) {
   const [email, setEmail] = useState('');

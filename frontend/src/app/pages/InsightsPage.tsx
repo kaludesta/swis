@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { Brain, TrendingUp, AlertTriangle, Lightbulb, Activity, Target, Clock, Zap } from 'lucide-react';
+import { API_URL } from '../../config';
 
 interface InsightsPageProps {
   onLogout: () => void;
@@ -64,7 +65,7 @@ export default function InsightsPage({ onLogout }: InsightsPageProps) {
       setLoading(true);
       const userId = localStorage.getItem('userId');
       
-      const response = await fetch(`http://localhost:3000/api/ml/insights/${userId}`, {
+      const response = await fetch(`${API_URL}/ml/insights/${userId}`, {
         method: 'POST'
       });
       

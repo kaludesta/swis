@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { User, Shield, Bell, LogOut, Calendar, RefreshCw } from 'lucide-react';
+import { API_URL } from '../../config';
 
 interface SettingsPageProps {
   onLogout: () => void;
 }
-
-const API_URL = 'http://localhost:3000/api';
 
 export default function SettingsPage({ onLogout }: SettingsPageProps) {
   const [userName, setUserName] = useState('');

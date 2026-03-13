@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { GraduationCap } from 'lucide-react';
-
-const API_URL = 'http://localhost:3000/api';
+import { API_URL } from '../../config';
 
 export default function RegisterPage() {
   const navigate = useNavigate();

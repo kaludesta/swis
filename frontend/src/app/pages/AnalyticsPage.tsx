@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { TrendingUp, Clock, Globe } from 'lucide-react';
+import { API_URL } from '../../config';
 
 interface AnalyticsPageProps {
   onLogout: () => void;
@@ -19,8 +20,6 @@ interface TopSite {
   total_time: number;
   visit_count: number;
 }
-
-const API_URL = 'http://localhost:3000/api';
 
 const COLORS = ['#2563eb', '#7c3aed', '#db2777', '#ea580c', '#ca8a04', '#16a34a', '#0891b2', '#4f46e5'];
 
