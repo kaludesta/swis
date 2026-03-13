@@ -28,6 +28,24 @@ app.get('/', (req, res) => {
   res.json({ message: 'SWIS Backend API is running', status: 'ok' });
 });
 
+// Health check - moved here for testing
+app.get('/api/health', async (req, res) => {
+  try {
+    await sequelize.authenticate();
+    res.json({ 
+      status: 'ok',
+      database: 'connected',
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    res.json({ 
+      status: 'error',
+      database: 'disconnected',
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
 // Database connection and sync
 async function initializeDatabase() {
   try {
@@ -765,24 +783,6 @@ app.post('/api/ml/insights/:userId', async (req, res) => {
   } catch (error) {
     console.error('❌ ML insights error:', error);
     res.status(400).json({ error: error.message });
-  }
-});
-
-// Health check
-app.get('/api/health', async (req, res) => {
-  try {
-    await sequelize.authenticate();
-    res.json({ 
-      status: 'ok',
-      database: 'connected',
-      timestamp: new Date().toISOString()
-    });
-  } catch (error) {
-    res.json({ 
-      status: 'error',
-      database: 'disconnected',
-      timestamp: new Date().toISOString()
-    });
   }
 });
 
