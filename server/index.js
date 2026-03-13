@@ -797,8 +797,8 @@ app.get('/api/debug/tracking/:userId', async (req, res) => {
 
 // Initialize database and start server
 initializeDatabase().then(() => {
-  app.listen(PORT, () => {
-    console.log(`\n🚀 Server running on http://localhost:${PORT}`);
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`\n🚀 Server running on http://0.0.0.0:${PORT}`);
     console.log(`📊 API endpoints available at http://localhost:${PORT}/api`);
     console.log(`🔍 Health check: http://localhost:${PORT}/api/health\n`);
     
