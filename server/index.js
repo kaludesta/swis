@@ -23,6 +23,11 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// Root route for testing
+app.get('/', (req, res) => {
+  res.json({ message: 'SWIS Backend API is running', status: 'ok' });
+});
+
 // Database connection and sync
 async function initializeDatabase() {
   try {
