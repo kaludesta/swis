@@ -54,8 +54,12 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   
   // Continue with normal tracking
   if (changeInfo.status === 'complete' && tab.active) {
-    saveTimeSpent();
-    startTracking(tab);
+    chrome.windows.get(tab.windowId, (window) => {
+      if (window.focused) {
+        saveTimeSpent();
+        startTracking(tab);
+      }
+    });
   }
 });
 
@@ -185,10 +189,13 @@ function startTracking(tab) {
 
 // Listen for tab activation
 chrome.tabs.onActivated.addListener(async (activeInfo) => {
-  saveTimeSpent();
-  
   const tab = await chrome.tabs.get(activeInfo.tabId);
-  startTracking(tab);
+  const window = await chrome.windows.get(tab.windowId);
+  
+  if (window.focused) {
+    saveTimeSpent();
+    startTracking(tab);
+  }
 });
 
 // Listen for window focus changes
@@ -208,10 +215,18 @@ chrome.windows.onFocusChanged.addListener(async (windowId) => {
 });
 
 // Save data periodically (every 10 seconds for more frequent updates)
-setInterval(() => {
-  saveTimeSpent();
-  if (currentTab && startTime) {
-    startTime = Date.now(); // Reset start time to continue tracking
+setInterval(async () => {
+  const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+  if (tab) {
+    saveTimeSpent();
+    if (currentTab && startTime) {
+      startTime = Date.now(); // Reset start time to continue tracking
+    }
+  } else {
+    // No active tab in focused window, pause tracking
+    saveTimeSpent();
+    currentTab = null;
+    startTime = null;
   }
 }, 10000);
 
