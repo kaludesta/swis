@@ -781,6 +781,20 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
+// Debug endpoint to see all tracking data
+app.get('/api/debug/tracking/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const data = await WebsiteTracking.findAll({
+      where: { user_id: userId },
+      order: [['visit_date', 'DESC']]
+    });
+    res.json(data);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 // Initialize database and start server
 initializeDatabase().then(() => {
   app.listen(PORT, () => {

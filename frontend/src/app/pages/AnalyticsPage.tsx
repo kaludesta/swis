@@ -58,24 +58,26 @@ export default function AnalyticsPage({ onLogout }: AnalyticsPageProps) {
 
   const fetchAnalytics = async () => {
     try {
-      const { startDate, endDate } = getDateRange();
+      console.log('🔍 Fetching analytics for userId:', userId);
       
-      // Fetch tracking data with date range
-      const trackingResponse = await fetch(
-        `${API_URL}/tracking/${userId}?startDate=${startDate}&endDate=${endDate}`
-      );
+      // Fetch ALL tracking data without date filter
+      const trackingResponse = await fetch(`${API_URL}/tracking/${userId}`);
       if (trackingResponse.ok) {
         const tracking = await trackingResponse.json();
+        console.log('📊 Tracking data received:', tracking);
         setTrackingData(tracking);
+      } else {
+        console.error('❌ Failed to fetch tracking data:', trackingResponse.status);
       }
 
-      // Fetch top sites with date range
-      const topResponse = await fetch(
-        `${API_URL}/tracking/${userId}/top?limit=10&startDate=${startDate}&endDate=${endDate}`
-      );
+      // Fetch top sites without date filter
+      const topResponse = await fetch(`${API_URL}/tracking/${userId}/top?limit=10`);
       if (topResponse.ok) {
         const top = await topResponse.json();
+        console.log('📊 Top sites received:', top);
         setTopSites(top);
+      } else {
+        console.error('❌ Failed to fetch top sites:', topResponse.status);
       }
     } catch (error) {
       console.error('Error fetching analytics:', error);
@@ -167,7 +169,13 @@ export default function AnalyticsPage({ onLogout }: AnalyticsPageProps) {
           <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-12 text-center">
             <Globe className="w-12 h-12 mx-auto mb-4 text-gray-400" />
             <p className="text-gray-600 mb-2">No tracking data yet</p>
-            <p className="text-sm text-gray-500">Install the browser extension to start tracking your time</p>
+            <p className="text-sm text-gray-500 mb-4">Make sure the browser extension is installed and you're logged in</p>
+            <button
+              onClick={fetchAnalytics}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Refresh Data
+            </button>
           </div>
         ) : (
           <div className="space-y-6">

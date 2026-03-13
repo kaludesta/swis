@@ -1,13 +1,13 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router';
 import { useState } from 'react';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import DashboardPage from './pages/DashboardPage';
-import AssignmentsPage from './pages/AssignmentsPage';
-import StudySessionPage from './pages/StudySessionPage';
-import AnalyticsPage from './pages/AnalyticsPage';
-import InsightsPage from './pages/InsightsPage';
-import SettingsPage from './pages/SettingsPage';
+import LoginPage from '../pages/LoginPage';
+import RegisterPage from '../pages/RegisterPage';
+import DashboardPage from '../pages/DashboardPage';
+import AssignmentsPage from '../pages/AssignmentsPage';
+import StudySessionPage from '../pages/StudySessionPage';
+import AnalyticsPage from '../pages/AnalyticsPage';
+import InsightsPage from '../pages/InsightsPage';
+import SettingsPage from '../pages/SettingsPage';
 
 export default function App() {
   // Check if user is already logged in
