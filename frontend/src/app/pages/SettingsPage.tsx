@@ -15,21 +15,21 @@ export default function SettingsPage({ onLogout }: SettingsPageProps) {
   const [lastSync, setLastSync] = useState<string | null>(null);
   const [syncing, setSyncing] = useState(false);
   const [syncMessage, setSyncMessage] = useState('');
-  
+
   // Notification preferences
   const [notifications, setNotifications] = useState({
     deadlineReminders: true,
     workloadAlerts: true,
     weeklySummary: true
   });
-  
+
   // Privacy preferences
   const [privacy, setPrivacy] = useState({
     dataCollection: true,
     analytics: true,
     emailNotifications: true,
   });
-  
+
   // Change password state
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [passwordData, setPasswordData] = useState({
@@ -38,7 +38,7 @@ export default function SettingsPage({ onLogout }: SettingsPageProps) {
     confirmPassword: ''
   });
   const [passwordMessage, setPasswordMessage] = useState('');
-  
+
   // Delete account state
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deletePassword, setDeletePassword] = useState('');
@@ -52,14 +52,14 @@ export default function SettingsPage({ onLogout }: SettingsPageProps) {
     const email = localStorage.getItem('userEmail') || '';
     setUserName(name);
     setUserEmail(email);
-    
+
     // Load calendar URL and preferences
     if (userId) {
       fetchCalendarUrl();
       fetchPreferences();
     }
   }, [userId]);
-  
+
   const fetchPreferences = async () => {
     try {
       const response = await fetch(`${API_URL}/user/${userId}/preferences`);
@@ -72,19 +72,19 @@ export default function SettingsPage({ onLogout }: SettingsPageProps) {
       console.error('Error fetching preferences:', error);
     }
   };
-  
+
   const savePreferences = async (type: 'notifications' | 'privacy', value: any) => {
     try {
-      const body = type === 'notifications' 
+      const body = type === 'notifications'
         ? { notifications: value }
         : { privacy: value };
-        
+
       const response = await fetch(`${API_URL}/user/${userId}/preferences`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       });
-      
+
       if (response.ok) {
         console.log('Preferences saved');
       }
@@ -113,7 +113,7 @@ export default function SettingsPage({ onLogout }: SettingsPageProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ calendarUrl })
       });
-      
+
       if (response.ok) {
         setSyncMessage('✓ Calendar URL saved!');
         setTimeout(() => setSyncMessage(''), 3000);
@@ -131,21 +131,21 @@ export default function SettingsPage({ onLogout }: SettingsPageProps) {
       setTimeout(() => setSyncMessage(''), 3000);
       return;
     }
-    
+
     setSyncing(true);
     setSyncMessage(replaceAll ? 'Replacing all assignments...' : 'Syncing...');
-    
+
     try {
       const response = await fetch(`${API_URL}/user/${userId}/sync-calendar`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ replaceAll })
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setLastSync(data.lastSync);
-        
+
         if (data.message) {
           // Empty calendar or special message
           setSyncMessage(`⚠️ ${data.message}`);
@@ -176,18 +176,18 @@ export default function SettingsPage({ onLogout }: SettingsPageProps) {
       onLogout();
     }
   };
-  
+
   const handleChangePassword = async () => {
     if (passwordData.newPassword !== passwordData.confirmPassword) {
       setPasswordMessage('❌ Passwords do not match');
       return;
     }
-    
+
     if (passwordData.newPassword.length < 6) {
       setPasswordMessage('❌ Password must be at least 6 characters');
       return;
     }
-    
+
     try {
       const response = await fetch(`${API_URL}/user/${userId}/change-password`, {
         method: 'POST',
@@ -197,9 +197,9 @@ export default function SettingsPage({ onLogout }: SettingsPageProps) {
           newPassword: passwordData.newPassword
         })
       });
-      
+
       const data = await response.json();
-      
+
       if (response.ok) {
         setPasswordMessage('✅ Password changed successfully!');
         setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
@@ -214,22 +214,22 @@ export default function SettingsPage({ onLogout }: SettingsPageProps) {
       setPasswordMessage('❌ Network error. Please try again.');
     }
   };
-  
+
   const handleDeleteAccount = async () => {
     if (!deletePassword) {
       setDeleteMessage('❌ Please enter your password');
       return;
     }
-    
+
     try {
       const response = await fetch(`${API_URL}/user/${userId}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: deletePassword })
       });
-      
+
       const data = await response.json();
-      
+
       if (response.ok) {
         setDeleteMessage('✅ Account deleted. Logging out...');
         setTimeout(() => {
@@ -246,7 +246,7 @@ export default function SettingsPage({ onLogout }: SettingsPageProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar onLogout={onLogout} />
-      
+
       <div className="max-w-[1440px] mx-auto px-6 py-8">
         <div className="mb-8">
           <h1 className="text-3xl mb-2">Settings</h1>
@@ -329,7 +329,9 @@ export default function SettingsPage({ onLogout }: SettingsPageProps) {
                   <ol className="text-xs text-blue-800 space-y-1 ml-4 list-decimal">
                     <li>Login to USIU Blackboard</li>
                     <li>Go to Calendar</li>
-                    <li>Click "Subscribe to Calendar"</li>
+                    <li>Go to Settings</li>
+                    <li>Press ...</li>
+                    <li>Share Calander</li>
                     <li>Copy the iCal URL</li>
                     <li>Paste it here and click "Save URL"</li>
                     <li>Click "Sync Now" to import assignments</li>
@@ -345,40 +347,40 @@ export default function SettingsPage({ onLogout }: SettingsPageProps) {
                 <h2 className="text-xl">Profile Information</h2>
               </div>
 
-            <div className="space-y-6">
-              <div>
-                <label className="block mb-2 text-sm font-medium text-gray-700">
-                  Full Name
-                </label>
-                <div className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-700">
-                  {userName || 'Not set'}
+              <div className="space-y-6">
+                <div>
+                  <label className="block mb-2 text-sm font-medium text-gray-700">
+                    Full Name
+                  </label>
+                  <div className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-700">
+                    {userName || 'Not set'}
+                  </div>
                 </div>
-              </div>
 
-              <div>
-                <label className="block mb-2 text-sm font-medium text-gray-700">
-                  Email Address
-                </label>
-                <div className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-700">
-                  {userEmail || 'Not set'}
+                <div>
+                  <label className="block mb-2 text-sm font-medium text-gray-700">
+                    Email Address
+                  </label>
+                  <div className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-700">
+                    {userEmail || 'Not set'}
+                  </div>
                 </div>
-              </div>
 
-              <div className="pt-4 border-t border-gray-200">
-                <p className="text-sm text-gray-600 mb-4">
-                  Your profile information is managed through your account. To update your name or email, please contact support.
-                </p>
-              </div>
+                <div className="pt-4 border-t border-gray-200">
+                  <p className="text-sm text-gray-600 mb-4">
+                    Your profile information is managed through your account. To update your name or email, please contact support.
+                  </p>
+                </div>
 
-              <button
-                onClick={handleLogoutClick}
-                className="w-full flex items-center justify-center gap-2 bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors"
-              >
-                <LogOut className="w-5 h-5" />
-                Logout
-              </button>
+                <button
+                  onClick={handleLogoutClick}
+                  className="w-full flex items-center justify-center gap-2 bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors"
+                >
+                  <LogOut className="w-5 h-5" />
+                  Logout
+                </button>
+              </div>
             </div>
-          </div>
           </div>
 
           {/* Privacy & Notifications */}
@@ -545,13 +547,13 @@ export default function SettingsPage({ onLogout }: SettingsPageProps) {
             <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
               <h3 className="text-sm font-medium text-gray-900 mb-4">Account Actions</h3>
               <div className="space-y-3">
-                <button 
+                <button
                   onClick={() => setShowPasswordModal(true)}
                   className="w-full text-left px-4 py-3 text-sm text-gray-700 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                 >
                   Change Password
                 </button>
-                <button 
+                <button
                   onClick={() => setShowDeleteModal(true)}
                   className="w-full text-left px-4 py-3 text-sm text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
                 >
@@ -561,13 +563,13 @@ export default function SettingsPage({ onLogout }: SettingsPageProps) {
             </div>
           </div>
         </div>
-        
+
         {/* Change Password Modal */}
         {showPasswordModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
               <h3 className="text-xl font-semibold mb-4">Change Password</h3>
-              
+
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -580,7 +582,7 @@ export default function SettingsPage({ onLogout }: SettingsPageProps) {
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     New Password
@@ -592,7 +594,7 @@ export default function SettingsPage({ onLogout }: SettingsPageProps) {
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Confirm New Password
@@ -604,13 +606,13 @@ export default function SettingsPage({ onLogout }: SettingsPageProps) {
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
-                
+
                 {passwordMessage && (
                   <div className={`p-3 rounded-lg ${passwordMessage.includes('✅') ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
                     <p className="text-sm">{passwordMessage}</p>
                   </div>
                 )}
-                
+
                 <div className="flex gap-3 mt-6">
                   <button
                     onClick={() => {
@@ -633,13 +635,13 @@ export default function SettingsPage({ onLogout }: SettingsPageProps) {
             </div>
           </div>
         )}
-        
+
         {/* Delete Account Modal */}
         {showDeleteModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
               <h3 className="text-xl font-semibold mb-4 text-red-600">Delete Account</h3>
-              
+
               <div className="space-y-4">
                 <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
                   <p className="text-sm text-red-900 font-medium mb-2">⚠️ Warning: This action cannot be undone!</p>
@@ -647,7 +649,7 @@ export default function SettingsPage({ onLogout }: SettingsPageProps) {
                     All your data including assignments, study sessions, and tracking data will be permanently deleted.
                   </p>
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Enter your password to confirm
@@ -660,13 +662,13 @@ export default function SettingsPage({ onLogout }: SettingsPageProps) {
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                   />
                 </div>
-                
+
                 {deleteMessage && (
                   <div className={`p-3 rounded-lg ${deleteMessage.includes('✅') ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
                     <p className="text-sm">{deleteMessage}</p>
                   </div>
                 )}
-                
+
                 <div className="flex gap-3 mt-6">
                   <button
                     onClick={() => {

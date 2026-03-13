@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 class MLService {
   constructor() {
     this.pythonPath = 'python'; // or 'python3' on some systems
-    this.scriptPath = path.join(__dirname, '../ml/predictor.py');
+    this.scriptPath = path.join(__dirname, '../Machine Learning/predictor.py');
   }
 
   async callPython(method, data) {
@@ -16,7 +16,8 @@ class MLService {
       const python = spawn(this.pythonPath, ['-c', `
 import sys
 import json
-sys.path.append('${path.join(__dirname, '../ml').replace(/\\/g, '\\\\')}')
+import os
+sys.path.append('${path.join(__dirname, '../Machine Learning').replace(/\\/g, '\\\\')}')
 from predictor import predictor
 
 # Train model if not trained
