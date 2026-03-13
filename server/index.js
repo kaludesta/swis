@@ -28,6 +28,11 @@ app.get('/', (req, res) => {
   res.json({ message: 'SWIS Backend API is running', status: 'ok' });
 });
 
+// Simple API test route
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'API route works!', timestamp: new Date().toISOString() });
+});
+
 // Health check - moved here for testing
 app.get('/api/health', async (req, res) => {
   try {
